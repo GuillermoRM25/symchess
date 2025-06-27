@@ -1,0 +1,110 @@
+html, body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  background: radial-gradient(circle,rgba(23, 1, 9, 1) 0%, rgba(117, 30, 35, 1) 30%, rgba(43, 3, 3, 1) 100%);
+  }
+  
+.chessBoard {
+  
+  height: 98%;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  outline: 4px solid black;
+  aspect-ratio: 1 / 1;
+}
+.square {
+  width:12.5%;
+  height: 12.5%;
+  float: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  outline: 1px solid black;
+}
+.white {
+  background-color: #ddc69c;
+}
+.black {
+  background-color: #3B5BA5;
+}
+.coordinate {
+  height:auto;
+  display:flex;
+  bottom: 4%;
+  left:4%;
+  position: absolute;
+  font-size: 12px;
+  font-weight: bold;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.rank {
+  top:4%;
+  right:4%;
+  left:auto;
+}
+.whiteText {
+  color:#f0d9b5;
+}
+.blackText {
+  color:#b58863;
+}
+.piece {
+  width:100%;
+  z-index: 1;
+  cursor: pointer;
+}
+.piece img {
+  max-width: 100%;
+  width:100%;
+  height: auto;
+}
+
+#alert {
+  position: fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  color: black;
+  width:44vw;
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+  font-size:xxx-large;
+  font-weight: bold;
+  z-index: 1000;
+  display: none;
+
+}
+    
+
+
+@media (max-width:600px) {
+  .coordinate {
+    font-size: 8px;
+  }
+}
+
+.promotionOption{
+  border-radius: 50%;
+  background-color: darkgray;
+  transition: transform 0.2s;
+  position: absolute;
+  z-index: 1000;
+}
+.promotionOption:hover {
+  cursor: pointer;
+  border-radius: 0%;
+  background-color:#539B0C;
+  width: 100%;
+}
+.promotionOption img {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+}
+
