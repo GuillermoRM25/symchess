@@ -8,7 +8,8 @@ html, body {
   }
   
 .chessBoard {
-  
+  touch-action: none; /* disables default gestures like scrolling */
+  user-select: none;
   height: 98%;
   margin: 0 auto;
   display: flex;
@@ -54,11 +55,16 @@ html, body {
   color:#b58863;
 }
 .piece {
+  position: relative;
+  touch-action: none;
+  user-select: none;
+  z-index: 1;
   width:100%;
   z-index: 1;
   cursor: pointer;
 }
 .piece img {
+  pointer-events: none; /* allows touch events to reach parent div */
   max-width: 100%;
   width:100%;
   height: auto;
