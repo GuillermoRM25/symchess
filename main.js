@@ -17,20 +17,6 @@ setupBoardSquares();
 setupPieces();
 fillBoardSquaresArray();
 
-function setupPieces() {
-  for (let i = 0; i < pieces.length; i++) {
-    pieces[i].addEventListener("dragstart", drag);
-    pieces[i].setAttribute("draggable", true);
-    pieces[i].id =
-      pieces[i].className.split(" ")[1] + pieces[i].parentElement.id;
-
-    // Touch support
-    pieces[i].addEventListener("touchstart", onTouchStart, { passive: false });
-  }
-  for (let i = 0; i < piecesImages.length; i++) {
-    piecesImages[i].setAttribute("draggable", false);
-  }
-}
 
 function onTouchStart(e) {
   if (!allowMovement) return;
@@ -535,6 +521,9 @@ function setupPieces() {
     pieces[i].setAttribute("draggable", true);
     pieces[i].id =
       pieces[i].className.split(" ")[1] + pieces[i].parentElement.id;
+     
+	  // 👇 Add this for touch support
+    pieces[i].addEventListener("touchstart", onTouchStart, { passive: false });
   }
   for (let i = 0; i < piecesImages.length; i++) {
     piecesImages[i].setAttribute("draggable", false);
