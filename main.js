@@ -1,5 +1,5 @@
 let boardSquaresArray = [];
-let positionArray=[];
+let positionArray = [];
 let moves = [];
 const castlingSquares = ["g1", "g8", "c1", "c8"];
 let isWhiteTurn = true;
@@ -10,9 +10,110 @@ const pieces = document.getElementsByClassName("piece");
 const piecesImages = document.getElementsByTagName("img");
 const chessBoard = document.querySelector(".chessBoard");
 
+let touchPiece = null;
+let touchStartSquareId = null;
+
 setupBoardSquares();
 setupPieces();
 fillBoardSquaresArray();
+
+function setupPieces() {
+  for (let i = 0; i < pieces.length; i++) {
+    pieces[i].addEventListener("dragstart", drag);
+    pieces[i].setAttribute("draggable", true);
+    pieces[i].id =
+      pieces[i].className.split(" ")[1] + pieces[i].parentElement.id;
+
+    // Touch support
+    pieces[i].addEventListener("touchstart", onTouchStart, { passive: false });
+  }
+  for (let i = 0; i < piecesImages.length; i++) {
+    piecesImages[i].setAttribute("draggable", false);
+  }
+}
+
+function onTouchStart(e) {
+  if (!allowMovement) return;
+  e.preventDefault();
+  touchPiece = e.currentTarget;
+
+  const pieceColor = touchPiece.getAttribute("color");
+  if (
+    (isWhiteTurn && pieceColor !== "white") ||
+    (!isWhiteTurn && pieceColor !== "black")
+  ) return;
+
+  touchStartSquareId = touchPiece.parentElement.id;
+
+  document.addEventListener("touchmove", onTouchMove, { passive: false });
+  document.addEventListener("touchend", onTouchEnd);
+}
+
+function onTouchMove(e) {
+  e.preventDefault();
+  const touch = e.touches[0];
+  touchPiece.style.position = "absolute";
+  touchPiece.style.zIndex = "1000";
+  touchPiece.style.left = `${touch.clientX - 25}px`;
+  touchPiece.style.top = `${touch.clientY - 25}px`;
+}
+
+function onTouchEnd(e) {
+  document.removeEventListener("touchmove", onTouchMove);
+  document.removeEventListener("touchend", onTouchEnd);
+
+  const touch = e.changedTouches[0];
+  const targetElem = document.elementFromPoint(touch.clientX, touch.clientY);
+
+  const destinationSquare = targetElem?.closest(".square");
+  if (destinationSquare) {
+    simulateDrop(touchPiece, destinationSquare, touchStartSquareId);
+  }
+
+  touchPiece.style.position = "";
+  touchPiece.style.zIndex = "";
+  touchPiece.style.left = "";
+  touchPiece.style.top = "";
+
+  touchPiece = null;
+  touchStartSquareId = null;
+}
+
+function simulateDrop(piece, destinationSquare, startingSquareId) {
+  const event = {
+    currentTarget: destinationSquare,
+    dataTransfer: {
+      getData: (type) => {
+        if (type === "text") return piece.id + "|" + startingSquareId;
+        if (type === "application/json") {
+          const pieceColor = piece.getAttribute("color");
+          const pieceType = piece.classList[1];
+          const pieceObject = {
+            pieceColor,
+            pieceType,
+            pieceId: piece.id,
+          };
+          let legalSquares = getPossibleMoves(
+            startingSquareId,
+            pieceObject,
+            boardSquaresArray
+          );
+          legalSquares = isMoveValidAgainstCheck(
+            legalSquares,
+            startingSquareId,
+            pieceColor,
+            pieceType
+          );
+          return JSON.stringify(legalSquares);
+        }
+        return "";
+      }
+    },
+    preventDefault: () => {}
+  };
+
+  drop(event);
+}
 
 function fillBoardSquaresArray() {
   const boardSquares = document.getElementsByClassName("square");
