@@ -1,4 +1,7 @@
 html, body {
+  touch-action: none; /* prevents browser gestures */
+  overscroll-behavior: none;
+  user-select: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,7 +12,9 @@ html, body {
   
 .chessBoard {
   touch-action: none; /* disables default gestures like scrolling */
+  -ms-touch-action: none;
   user-select: none;
+  -webkit-user-drag: none;
   height: 98%;
   margin: 0 auto;
   display: flex;
@@ -57,6 +62,7 @@ html, body {
 .piece {
   position: relative;
   touch-action: none;
+  -webkit-user-drag: none;
   user-select: none;
   z-index: 1;
   width:100%;
