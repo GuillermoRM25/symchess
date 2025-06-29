@@ -1,5 +1,5 @@
 html, body {
-  touch-action: none; /* prevents browser gestures */
+	touch-action: none; /* prevents browser gestures */
   overscroll-behavior: none;
   user-select: none;
   display: flex;
@@ -7,12 +7,12 @@ html, body {
   justify-content: center;
   height: 100%;
   width: 100%;
-  background: radial-gradient(circle,rgba(23, 1, 9, 1) 0%, rgba(117, 30, 35, 1) 30%, rgba(43, 3, 3, 1) 100%);
+  background: radial-gradient(circle, #5b7d73 0%, #405952 50%, #2f423d 100%);
   }
   
 .chessBoard {
   touch-action: none; /* disables default gestures like scrolling */
-  -ms-touch-action: none;
+   -ms-touch-action: none;
   user-select: none;
   -webkit-user-drag: none;
   height: 98%;
@@ -33,10 +33,10 @@ html, body {
   outline: 1px solid black;
 }
 .white {
-  background-color: #ddc69c;
+  background-color: #FFD393;
 }
 .black {
-  background-color: #3B5BA5;
+  background-color: #9C9B7A;
 }
 .coordinate {
   height:auto;
@@ -60,7 +60,7 @@ html, body {
   color:#b58863;
 }
 .piece {
-  position: relative;
+	position: relative;
   touch-action: none;
   -webkit-user-drag: none;
   user-select: none;
@@ -70,7 +70,7 @@ html, body {
   cursor: pointer;
 }
 .piece img {
-  pointer-events: none; /* allows touch events to reach parent div */
+	pointer-events: none; /* allows touch events to reach parent div */
   max-width: 100%;
   width:100%;
   height: auto;

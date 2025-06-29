@@ -521,7 +521,7 @@ function setupPieces() {
     pieces[i].setAttribute("draggable", true);
     pieces[i].id =
       pieces[i].className.split(" ")[1] + pieces[i].parentElement.id;
-     
+	  
 	  // 👇 Add this for touch support
     pieces[i].addEventListener("touchstart", onTouchStart, { passive: false });
   }
