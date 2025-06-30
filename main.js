@@ -557,10 +557,7 @@ function drag(ev) {
     );
     let legalSquaresJson = JSON.stringify(legalSquares);
     ev.dataTransfer.setData("application/json", legalSquaresJson);
-	  // 👇 Suppress ghost image on drag
-    const img = new Image();
-    img.src = ""; // transparent or blank
-    ev.dataTransfer.setDragImage(img, 0, 0);
+	
   }
 }
 
