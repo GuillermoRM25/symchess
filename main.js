@@ -521,6 +521,11 @@ function setupPieces() {
     pieces[i].setAttribute("draggable", true);
     pieces[i].id =
       pieces[i].className.split(" ")[1] + pieces[i].parentElement.id;
+	  // 🔽 NEW: Hide ghost drag image
+    pieces[i].addEventListener("dragstart", function (e) {
+      const img = new Image();
+      img.src = "";
+      e.dataTransfer.setDragImage(img, 0, 0);
 	  
 	  // 👇 Add this for touch support
     pieces[i].addEventListener("touchstart", onTouchStart, { passive: false });
