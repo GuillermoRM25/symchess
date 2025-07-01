@@ -17,6 +17,8 @@ setupBoardSquares();
 setupPieces();
 fillBoardSquaresArray();
 
+let offsetX = 0;
+let offsetY = 0;
 
 function onTouchStart(e) {
   if (!allowMovement) return;
@@ -31,6 +33,11 @@ function onTouchStart(e) {
 
   touchStartSquareId = touchPiece.parentElement.id;
 
+	const touch = e.touches[0];
+  const rect = touchPiece.getBoundingClientRect();
+  offsetX = touch.clientX - rect.left;
+  offsetY = touch.clientY - rect.top;
+
   document.addEventListener("touchmove", onTouchMove, { passive: false });
   document.addEventListener("touchend", onTouchEnd);
 }
@@ -40,8 +47,8 @@ function onTouchMove(e) {
   const touch = e.touches[0];
   touchPiece.style.position = "absolute";
   touchPiece.style.zIndex = "1000";
-  touchPiece.style.left = `${touch.clientX - 25}px`;
-  touchPiece.style.top = `${touch.clientY - 25}px`;
+  touchPiece.style.left = `${touch.clientX - offsetX}px`;
+  touchPiece.style.top = `${touch.clientY - offsetY}px`;
 }
 
 function onTouchEnd(e) {
