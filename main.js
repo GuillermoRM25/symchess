@@ -517,21 +517,24 @@ function setupBoardSquares() {
 }
 function setupPieces() {
   for (let i = 0; i < pieces.length; i++) {
-    pieces[i].addEventListener("dragstart", drag);
-    pieces[i].setAttribute("draggable", true);
-    pieces[i].id =
-      pieces[i].className.split(" ")[1] + pieces[i].parentElement.id;
+    // Unified dragstart interception – prevents native drag image
+    pieces[i].addEventListener("dragstart", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
 
-	   // 👇 Add this to prevent ghost drag image
-    pieces[i].addEventListener("dragstart", function (e) {
-      // Try hiding the ghost by using the element, but far away:
-  e.dataTransfer.setDragImage(this, -9999, -9999);
-	   
+      drag.call(this, e);
+
+      const img = new Image();
+      img.src = "";
+      e.dataTransfer.setDragImage(img, 0, 0);
     });
-	  
-	  // 👇 Add this for touch support
-    pieces[i].addEventListener("touchstart", onTouchStart, { passive: false });
+
+    // Ensure touch support remains as is
+    pieces[i].addEventListener("touchstart", onTouchStart, {passive: false});
+    pieces[i].id = pieces[i].className.split(' ')[1] + pieces[i].parentElement.id;
+    pieces[i].setAttribute("draggable", true); // optional – can be removed if unwanted
   }
+
   for (let i = 0; i < piecesImages.length; i++) {
     piecesImages[i].setAttribute("draggable", false);
   }
