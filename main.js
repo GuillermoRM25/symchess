@@ -524,9 +524,8 @@ function setupPieces() {
 
 	   // 👇 Add this to prevent ghost drag image
     pieces[i].addEventListener("dragstart", function (e) {
-      const img = new Image();
-      img.src = ""; // empty image = no ghost
-      e.dataTransfer.setDragImage(img, 0, 0);
+      // Try hiding the ghost by using the element, but far away:
+  e.dataTransfer.setDragImage(this, -9999, -9999);
 	   
     });
 	  
