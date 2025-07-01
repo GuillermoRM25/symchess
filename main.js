@@ -17,8 +17,6 @@ setupBoardSquares();
 setupPieces();
 fillBoardSquaresArray();
 
-let offsetX = 0;
-let offsetY = 0;
 
 function onTouchStart(e) {
   if (!allowMovement) return;
@@ -33,11 +31,6 @@ function onTouchStart(e) {
 
   touchStartSquareId = touchPiece.parentElement.id;
 
-	const touch = e.touches[0];
-  const rect = touchPiece.getBoundingClientRect();
-  offsetX = touch.clientX - rect.left;
-  offsetY = touch.clientY - rect.top;
-
   document.addEventListener("touchmove", onTouchMove, { passive: false });
   document.addEventListener("touchend", onTouchEnd);
 }
@@ -47,8 +40,8 @@ function onTouchMove(e) {
   const touch = e.touches[0];
   touchPiece.style.position = "absolute";
   touchPiece.style.zIndex = "1000";
-  touchPiece.style.left = `${touch.clientX - offsetX}px`;
-  touchPiece.style.top = `${touch.clientY - offsetY}px`;
+  touchPiece.style.left = `${touch.clientX - 25}px`;
+  touchPiece.style.top = `${touch.clientY - 25}px`;
 }
 
 function onTouchEnd(e) {
@@ -528,15 +521,6 @@ function setupPieces() {
     pieces[i].setAttribute("draggable", true);
     pieces[i].id =
       pieces[i].className.split(" ")[1] + pieces[i].parentElement.id;
-
-	   // 👇 Add this to prevent ghost drag image
-    pieces[i].addEventListener("dragstart", function (e) {
-      const img = new Image();
-      img.src = ""; // empty image = no ghost
-      e.dataTransfer.setDragImage(img, 0, 0);
-	    // Option B (more foolproof): place the ghost far offscreen
-  e.dataTransfer.setDragImage(this, -9999, -9999);
-    });
 	  
 	  // 👇 Add this for touch support
     pieces[i].addEventListener("touchstart", onTouchStart, { passive: false });

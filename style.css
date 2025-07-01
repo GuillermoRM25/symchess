@@ -22,12 +22,6 @@ html, body {
   outline: 4px solid black;
   aspect-ratio: 1 / 1;
 }
-
-.chessBoard img {
-  user-select: none;     /* avoid built-in image drags */
-  touch-action: none;    /* images don’t steal gestures */
-}
-
 .square {
   width:12.5%;
   height: 12.5%;
