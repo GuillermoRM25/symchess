@@ -17,6 +17,8 @@ setupBoardSquares();
 setupPieces();
 fillBoardSquaresArray();
 
+// Add a new global variable to store the original parent square
+let originalPieceParent = null;
 
 function onTouchStart(e) {
   if (!allowMovement) return;
@@ -31,6 +33,16 @@ function onTouchStart(e) {
 
   touchStartSquareId = touchPiece.parentElement.id;
 
+  originalPieceParent = touchPiece.parentElement; // Store the current parent square
+
+  // Temporarily append the piece to the chessBoard to make its absolute positioning relative to the board
+  chessBoard.appendChild(touchPiece);
+
+  // Set the piece to absolute position for dragging
+  touchPiece.style.position = "absolute";
+  touchPiece.style.zIndex = "1000"; // Ensure it's on top during drag
+
+
   document.addEventListener("touchmove", onTouchMove, { passive: false });
   document.addEventListener("touchend", onTouchEnd);
 }
@@ -38,31 +50,38 @@ function onTouchStart(e) {
 function onTouchMove(e) {
   e.preventDefault();
   const touch = e.touches[0];
-  touchPiece.style.position = "absolute";
-  touchPiece.style.zIndex = "1000";
-  touchPiece.style.left = `${touch.clientX - 25}px`;
-  touchPiece.style.top = `${touch.clientY - 25}px`;
+  // Get the bounding rectangle of the chess board to find its position relative to the viewport
+  const boardRect = chessBoard.getBoundingClientRect();
+
+  // Get the current dimensions of the piece to accurately center it
+  const pieceRect = touchPiece.getBoundingClientRect();
+  const pieceWidth = pieceRect.width;
+  const pieceHeight = pieceRect.height;
+
+  // Calculate the position relative to the chessBoard, and then subtract half the piece's size
+  // to center the piece under the touch point.
+  touchPiece.style.left = `${touch.clientX - boardRect.left - (pieceWidth / 2)}px`;
+  touchPiece.style.top = `${touch.clientY - boardRect.top - (pieceHeight / 2)}px`;
 }
 
 function onTouchEnd(e) {
   document.removeEventListener("touchmove", onTouchMove);
   document.removeEventListener("touchend", onTouchEnd);
 
-  const touch = e.changedTouches[0];
-  const targetElem = document.elementFromPoint(touch.clientX, touch.clientY);
-
-  const destinationSquare = targetElem?.closest(".square");
-  if (destinationSquare) {
-    simulateDrop(touchPiece, destinationSquare, touchStartSquareId);
-  }
-
-  touchPiece.style.position = "";
-  touchPiece.style.zIndex = "";
+  // Reset the piece's inline styles.
+  // Your game logic for placing the piece on a new square should then handle its final position and parent.
+  touchPiece.style.position = ""; // Revert to CSS default (relative for .piece)
   touchPiece.style.left = "";
   touchPiece.style.top = "";
+  touchPiece.style.zIndex = "";
+
+  // Important: After a move is validated, your game logic needs to append `touchPiece`
+  // to its new parent square (or back to `originalPieceParent` if the move is invalid).
+  // This ensures the piece is correctly integrated back into the board's structure.
 
   touchPiece = null;
   touchStartSquareId = null;
+  originalPieceParent = null;
 }
 
 function simulateDrop(piece, destinationSquare, startingSquareId) {
