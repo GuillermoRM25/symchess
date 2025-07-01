@@ -527,8 +527,7 @@ function setupPieces() {
       const img = new Image();
       img.src = ""; // empty image = no ghost
       e.dataTransfer.setDragImage(img, 0, 0);
-	    // Option B (more foolproof): place the ghost far offscreen
-  e.dataTransfer.setDragImage(this, -9999, -9999);
+	   
     });
 	  
 	  // 👇 Add this for touch support
