@@ -40,8 +40,8 @@ function onTouchMove(e) {
   const touch = e.touches[0];
   touchPiece.style.position = "absolute";
   touchPiece.style.zIndex = "1000";
-  touchPiece.style.left = `${touch.clientX - 25}px`;
-  touchPiece.style.top = `${touch.clientY - 25}px`;
+  touchPiece.style.left = `${touch.clientX - 125}px`;
+  touchPiece.style.top = `${touch.clientY - 125}px`;
 }
 
 function onTouchEnd(e) {
