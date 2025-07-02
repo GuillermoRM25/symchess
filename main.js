@@ -17,31 +17,39 @@ setupBoardSquares();
 setupPieces();
 fillBoardSquaresArray();
 
+let touchPiece = null;
+let offsetX = 0;
+let offsetY = 0;
 
 function onTouchStart(e) {
-  if (!allowMovement) return;
-  e.preventDefault();
-  touchPiece = e.currentTarget;
+  const touch = e.touches[0];
+  const target = document.elementFromPoint(touch.clientX, touch.clientY);
 
-  const pieceColor = touchPiece.getAttribute("color");
-  if (
-    (isWhiteTurn && pieceColor !== "white") ||
-    (!isWhiteTurn && pieceColor !== "black")
-  ) return;
+  if (!target || !target.classList.contains("piece")) return;
 
-  touchStartSquareId = touchPiece.parentElement.id;
+  touchPiece = target;
+
+  // Calculate the offset between the touch point and the top-left corner of the piece
+  const rect = touchPiece.getBoundingClientRect();
+  offsetX = touch.clientX - rect.left;
+  offsetY = touch.clientY - rect.top;
+
+  // Prepare piece to be moved
+  touchPiece.style.position = "absolute";
+  touchPiece.style.zIndex = "1000";
+  touchPiece.style.pointerEvents = "none"; // so elementFromPoint can see what's under it
 
   document.addEventListener("touchmove", onTouchMove, { passive: false });
   document.addEventListener("touchend", onTouchEnd);
 }
 
 function onTouchMove(e) {
-  e.preventDefault();
+  e.preventDefault(); // prevent scrolling
+  if (!touchPiece) return;
+
   const touch = e.touches[0];
-  touchPiece.style.position = "absolute";
-  touchPiece.style.zIndex = "1000";
-  touchPiece.style.left = `${touch.clientX - 25}px`;
-  touchPiece.style.top = `${touch.clientY - 25}px`;
+  touchPiece.style.left = `${touch.clientX - offsetX}px`;
+  touchPiece.style.top  = `${touch.clientY - offsetY}px`;
 }
 
 function onTouchEnd(e) {
