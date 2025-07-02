@@ -30,7 +30,7 @@ function onTouchStart(e) {
   ) return;
 
   touchStartSquareId = touchPiece.parentElement.id;
-
+e.target.style.opacity = "0";
   document.addEventListener("touchmove", onTouchMove, { passive: false });
   document.addEventListener("touchend", onTouchEnd);
 }
@@ -47,7 +47,7 @@ function onTouchMove(e) {
 function onTouchEnd(e) {
   document.removeEventListener("touchmove", onTouchMove);
   document.removeEventListener("touchend", onTouchEnd);
-
+e.target.style.opacity = "1";
   const touch = e.changedTouches[0];
   const targetElem = document.elementFromPoint(touch.clientX, touch.clientY);
 
