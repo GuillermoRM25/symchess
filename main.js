@@ -23,20 +23,20 @@ let offsetY = 0;
 function onTouchStart(e) {
   const touch = e.touches[0];
   const target = document.elementFromPoint(touch.clientX, touch.clientY);
-
   if (!target || !target.classList.contains("piece")) return;
 
   touchPiece = target;
 
-  // Calculate the offset between the touch point and the top-left corner of the piece
   const rect = touchPiece.getBoundingClientRect();
   offsetX = touch.clientX - rect.left;
   offsetY = touch.clientY - rect.top;
+  console.log("Touch start:", { offsetX, offsetY, rect });
 
-  // Prepare piece to be moved
   touchPiece.style.position = "absolute";
   touchPiece.style.zIndex = "1000";
-  touchPiece.style.pointerEvents = "none"; // so elementFromPoint can see what's under it
+  touchPiece.style.pointerEvents = "none";
+  touchPiece.style.left = `${rect.left}px`;
+  touchPiece.style.top = `${rect.top}px`;
 
   document.addEventListener("touchmove", onTouchMove, { passive: false });
   document.addEventListener("touchend", onTouchEnd);
