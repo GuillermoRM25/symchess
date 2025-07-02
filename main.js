@@ -17,38 +17,31 @@ setupBoardSquares();
 setupPieces();
 fillBoardSquaresArray();
 
-let offsetX = 0;
-let offsetY = 0;
 
 function onTouchStart(e) {
-  const touch = e.touches[0];
-  const target = document.elementFromPoint(touch.clientX, touch.clientY);
-  if (!target || !target.classList.contains("piece")) return;
+  if (!allowMovement) return;
+  e.preventDefault();
+  touchPiece = e.currentTarget;
 
-  touchPiece = target;
+  const pieceColor = touchPiece.getAttribute("color");
+  if (
+    (isWhiteTurn && pieceColor !== "white") ||
+    (!isWhiteTurn && pieceColor !== "black")
+  ) return;
 
-  const rect = touchPiece.getBoundingClientRect();
-  offsetX = touch.clientX - rect.left;
-  offsetY = touch.clientY - rect.top;
-  console.log("Touch start:", { offsetX, offsetY, rect });
-
-  touchPiece.style.position = "absolute";
-  touchPiece.style.zIndex = "1000";
-  touchPiece.style.pointerEvents = "none";
-  touchPiece.style.left = `${rect.left}px`;
-  touchPiece.style.top = `${rect.top}px`;
+  touchStartSquareId = touchPiece.parentElement.id;
 
   document.addEventListener("touchmove", onTouchMove, { passive: false });
   document.addEventListener("touchend", onTouchEnd);
 }
 
 function onTouchMove(e) {
-  e.preventDefault(); // prevent scrolling
-  if (!touchPiece) return;
-
+  e.preventDefault();
   const touch = e.touches[0];
-  touchPiece.style.left = `${touch.clientX - offsetX}px`;
-  touchPiece.style.top  = `${touch.clientY - offsetY}px`;
+  touchPiece.style.position = "absolute";
+  touchPiece.style.zIndex = "1000";
+  touchPiece.style.left = `${touch.clientX - 25}px`;
+  touchPiece.style.top = `${touch.clientY - 25}px`;
 }
 
 function onTouchEnd(e) {
