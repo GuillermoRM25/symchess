@@ -17,7 +17,6 @@ setupBoardSquares();
 setupPieces();
 fillBoardSquaresArray();
 
-let touchPiece = null;
 let offsetX = 0;
 let offsetY = 0;
 
