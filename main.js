@@ -457,6 +457,10 @@ function performPromotion(
   piece = createChessPiece(pieceType, pieceColor, "piece");
 
   piece.addEventListener("dragstart", drag);
+
+	// 🫵 ADD THIS LINE for touch support
+  piece.addEventListener("touchstart", onTouchStart, { passive: false });
+	
   piece.setAttribute("draggable", true);
   piece.firstChild.setAttribute("draggable", false);
   piece.id = pieceType + pieceId;
